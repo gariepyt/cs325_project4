@@ -45,8 +45,8 @@ def calcMin(start, graph):
 	path = []
 
 	#path = [start]
-	path.append(start)
-	currentV = graph[0]
+	#path.append(start)
+	currentV = start
 	distance = 0
 
 	#while (len(unmarked) > 0):
