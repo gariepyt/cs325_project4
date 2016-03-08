@@ -22,27 +22,48 @@ def calcDistance(start, target):
 	#return result
 	return distance
 
+
+
 def minNext(start, unmarked, n):
 	minDist = None
 	minVal = None
+	items = []
 
+	# This is just to append distance where we are at so far into items, from start to n - 1
+	for y in range(0, n - 1):
+		selectVal = unmarked[y]
+		selectDist = calcDistance(start, selectVal)
+		item = []
+		item.append(y)
+		item.append(selectDist)
+		items.append(item)
+
+	# Does the actual calculation of and decision of what is minimum distance from n to end of graph
 	for x in range(n, len(unmarked)):
 		selectVal = unmarked[x]
 		selectDist = calcDistance(start, selectVal)
+		item = []
+		item.append(x)
+		item.append(selectDist)
+		items.append(item)
 
 		if (minDist == None):
 			minDist = selectDist
 			minVal = selectVal
-		elif(minVal < minDist):
+		#elif(minVal < minDist):
+		elif(selectDist < minDist):
 			minDist = selectDist
 			minVal = selectVal
 
-	return minDist, minVal
+	return minDist, minVal, items
+
+
 
 def calcMin(start, graph):
 	#unmarked = graph
 	#unmarked.remove(start)
 	path = []
+	#items = []
 
 	#path = [start]
 	#path.append(start)
@@ -53,10 +74,10 @@ def calcMin(start, graph):
 		#nextD, nextV = minNext(currentV, unmarked)
 	#while (len(graph) > 0):
 	for n in range(0, len(graph)):
-		nextD, nextV = minNext(currentV, graph, n)
+		nextD, nextV, items = minNext(currentV, graph, n)
 
 		distance = distance + nextD
-		
+
 		path.append(nextV)
 		#unmarked.remove(nextV)
 
@@ -64,24 +85,33 @@ def calcMin(start, graph):
 
 	distance = distance + calcDistance(start, path[len(path) - 1])
 
-	return distance, path
+	return distance, path, items
+
+
 
 def calcPath(graph):
 	minDist = None
 	path = None
+	curItems = []
 
 	for x in range(0,len(graph)):
-		resMin, resPath = calcMin(graph[x], graph)
+		resMin, resPath, items = calcMin(graph[x], graph)
 		#graph = resPath
 		
 		if (minDist == None):
 			minDist = resMin
 			path = resPath
+			curItems = items
 		elif (resMin < minDist):
 			minDist = resMin
 			path = resPath
+			curItems = items
 
-	return minDist, path
+	# With the path decided, sort the array from least distance to greatest
+	curItems = sorted(curItems, key= lambda x: (x[1]))
+
+
+	return minDist, curItems
 
 def main():
 	if (len(sys.argv) == 2):
