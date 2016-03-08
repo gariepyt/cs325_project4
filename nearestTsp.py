@@ -67,6 +67,7 @@ def calcPath(graph):
 
 	for x in range(0,len(graph)):
 		resMin, resPath = calcMin(graph[x], graph)
+		graph = resPath
 		
 		if (minDist == None):
 			minDist = resMin
@@ -102,6 +103,8 @@ def main():
 				tEnd = time.time()
 
 				runTime = tEnd - tStart
+
+				minDist = int(minDist)
 
 				print("Time elapsed: ", runTime)
 				print("Minimal Distance: ", minDist)
