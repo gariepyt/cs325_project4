@@ -143,6 +143,7 @@ def main():
 					tEnd = time.time()
 
 				else:
+					#inData.sort(key= lambda j: (j[1]))
 					start = 0
 					stop = 299
 					sectionCount = (len(inData)/300)
