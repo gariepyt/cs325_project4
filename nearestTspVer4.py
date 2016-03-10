@@ -31,7 +31,7 @@ def minNext(start, unmarked, n):
 	items = []
 
 	# This is just to append distance where we are at so far into items, from start to n - 1
-	for y in range(0, n - 1):
+	for y in range(0, n):
 		selectVal = unmarked[y]
 		selectDist = calcDistance(start, selectVal)
 		item = []
@@ -51,7 +51,6 @@ def minNext(start, unmarked, n):
 		if (minDist == None):
 			minDist = selectDist
 			minVal = selectVal
-		#elif(minVal < minDist):
 		# change here to decide if current min is still less than the calculated minimum
 		elif(selectDist < minDist):
 			minDist = selectDist
@@ -62,27 +61,15 @@ def minNext(start, unmarked, n):
 
 
 def calcMin(start, graph):
-	#unmarked = graph
-	#unmarked.remove(start)
 	path = []
-	#items = []
-
-	#path = [start]
-	#path.append(start)
 	currentV = start
 	distance = 0
 
-	#while (len(unmarked) > 0):
-		#nextD, nextV = minNext(currentV, unmarked)
-	#while (len(graph) > 0):
+	graphLength = len(graph)
 	for n in range(0, len(graph)):
 		nextD, nextV, items = minNext(currentV, graph, n)
-
 		distance = distance + nextD
-
 		path.append(nextV)
-		#unmarked.remove(nextV)
-
 		currentV = graph[n]
 
 	distance = distance + calcDistance(start, path[len(path) - 1])
@@ -96,9 +83,10 @@ def calcPath(graph):
 	path = None
 	curItems = []
 
+	graphLength = len(graph)
+
 	for x in range(0,len(graph)):
 		resMin, resPath, items = calcMin(graph[x], graph)
-		#graph = resPath
 
 		if (minDist == None):
 			minDist = resMin
@@ -146,7 +134,7 @@ def main():
 				else:
 					inData.sort(key= lambda j: (j[1]))
 					start = 0
-					stop = 299
+					stop = 300
 					mInData = []
 					sectionCount = (len(inData)/300)
 					if ((len(inData)%300)!= 0):
@@ -158,7 +146,7 @@ def main():
 						mInData = inData[start:stop]
 						mInData.sort(key=lambda b: (b[2]))
 						mStart = 0
-						mStop = 49
+						mStop = 50
 						mSectionCount = (len(inData[start:stop])/50)
 						if ((len(inData[start:stop])%50)!= 0):
 							mSectionCount += 1
@@ -167,8 +155,6 @@ def main():
 								mStop = len(inData[start:stop]) - 1
 							minDist, path = calcPath(mInData[mStart:mStop])
 							totMinDist = totMinDist + minDist
-
-
 							curPath.append(path)
 							mStart = mStart + 50
 							mStop = mStop + 50
@@ -185,9 +171,15 @@ def main():
 				print("Minimal Distance: ", totMinDist)
 				resultFile.write(str(totMinDist) + "\n")
 
-				for k in range(0,len(curPath)):
-					for m in range(0, len(curPath[k])):
-						resultFile.write(str(curPath[k][m][0]) + "\n")
+				printLeng = len(curPath)
+
+				if(len(inData) < 300):
+					for n in range(0,len(curPath)):
+						resultFile.write(str(curPath[n][0]) + "\n")
+				else:
+					for k in range(0,len(curPath)):
+						for j in range(0, len(curPath[k])):
+							resultFile.write(str(curPath[k][j][0]) + "\n")
 
 		inputFile.close()
 		resultFile.close()
