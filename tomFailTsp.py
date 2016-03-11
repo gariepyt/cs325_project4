@@ -11,6 +11,8 @@ import sys
 import os # I don't think I need this
 import time
 
+divMark = 250
+
 def calcDistance(start, target):
 	# x val
 	x = abs(target[1] - start[1])
@@ -32,7 +34,7 @@ def minNext(start, unmarked):
 	# if (endPoint > 300):
 		# endPoint = 300
 
-	interval = int(endPoint / 500) + 1
+	interval = int(endPoint / divMark) + 1
 
 	# print "endPoint: " + str(endPoint) + " graph: " + str(len(unmarked))
 
@@ -83,7 +85,7 @@ def calcPath(graph):
 
 	endPoint = len(graph)
 	
-	interval = int(endPoint / 500) + 1
+	interval = int(endPoint / divMark) + 1
 
 	for x in range(0,endPoint, interval):
 		resMin, resPath = calcMin(graph[x], graph)
@@ -120,6 +122,8 @@ def main():
 
 					inData[x][1] = int(inData[x][1])
 					inData[x][2] = int(inData[x][2])
+
+				inData = sorted(inData, key=lambda line: line[1])
 
 				tStart = time.time()
 				minDist, path = calcPath(inData)
