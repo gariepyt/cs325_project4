@@ -132,7 +132,7 @@ def main():
 					tEnd = time.time()
 
 				else:
-					inData.sort(key= lambda j: (j[1]))
+					inData.sort(key= lambda a: (a[1]))
 					start = 0
 					stop = 300
 					mInData = []
@@ -141,8 +141,8 @@ def main():
 						sectionCount += 1
 					tStart = time.time()
 					for y in range(0, sectionCount):
-						if (y == sectionCount - 1):
-							stop = len(inData) - 1
+						#if (y == sectionCount - 1):
+						#	stop = len(inData) - 1
 						mInData = inData[start:stop]
 						mInData.sort(key=lambda b: (b[2]))
 						mStart = 0
@@ -151,8 +151,8 @@ def main():
 						if ((len(inData[start:stop])%50)!= 0):
 							mSectionCount += 1
 						for m in range(0, mSectionCount):
-							if (m == mSectionCount - 1):
-								mStop = len(inData[start:stop]) - 1
+							#if (m == mSectionCount - 1):
+							#	mStop = len(inData[start:stop]) - 1
 							minDist, path = calcPath(mInData[mStart:mStop])
 							totMinDist = totMinDist + minDist
 							curPath.append(path)
