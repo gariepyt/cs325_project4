@@ -90,40 +90,56 @@ def calcPath(graph, sTime):
 	
 	lowPoint = 0
 	highPoint = len(graph) -1
-	midPoint = (lowPoint + highPoint)/2
 	
-	midD, midP = calcMin(graph[len(graph)/2], graph)
+	cD = 0
+	cP = list(graph)
 
-	cD = midD
-	cP = list(midP)
+	# lowerD, lowerP = calcMin
 
-	lowerD, lowerP = calcMin
+	while (lowPoint <= highPoint):
+		midPoint = (lowPoint + highPoint)/2
 
-	while lowPoint <= highPoint:
+		lowD, lowP = calcMin(graph[lowPoint], graph)
+		midD, midP = calcMin(graph[midPoint], graph)
+		highD, highP = calcMin(graph[highPoint], graph)
+
+		if (midD < lowD and midD < highD):
+			cD = midD
+			cP = list(midP)
+			lowPoint = ((midPoint - lowPoint)/2) + lowPoint
+			highPoint = ((highPoint - midPoint)/2) + midPoint
+		elif (lowD < highD):
+			cD = lowD
+			cP = list(lowP)
+			highPoint = midPoint - 1
+		else:
+			cD = highD
+			cP = list(highP)
+			lowPoint = midPoint + 1
 
 
-	for x in range(0,endPoint, interval):
-		resMin, resPath = calcMin(graph[x], graph)
-		# graph = resPath
+	# for x in range(0,endPoint, interval):
+	# 	resMin, resPath = calcMin(graph[x], graph)
+	# 	# graph = resPath
 		
-		if (minDist == None):
-			minDist = resMin
-			path = list(resPath)
-		elif (resMin < minDist):
-			minDist = resMin
-			path = list(resPath)
+	# 	if (minDist == None):
+	# 		minDist = resMin
+	# 		path = list(resPath)
+	# 	elif (resMin < minDist):
+	# 		minDist = resMin
+	# 		path = list(resPath)
 
-		cEnd = time.time()
-		cTime = cEnd - sTime
-		print "Interval: " + str(x) 
-		print "Current min: " + str(minDist)
-		print "Current Start: " + str(path[0])
-		print "Current time: " + str(cTime)
+	# 	cEnd = time.time()
+	# 	cTime = cEnd - sTime
+	# 	print "Interval: " + str(x) 
+	# 	print "Current min: " + str(minDist)
+	# 	print "Current Start: " + str(path[0])
+	# 	print "Current time: " + str(cTime)
 
 		# nextG = list(resPath)
 		# nextS = resPath[len(nextG)/2]
 
-	return minDist, path
+	return cD, cP
 
 def main():
 	if (len(sys.argv) == 2):
