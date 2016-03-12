@@ -2,8 +2,7 @@
 # Author: Tom Gariepy
 # Last Updated: 3/7/2016
 # Description: Nearest Neighbour implementation of TSP
-
-# Note to self: still fails when dealing with larger number of cities
+# Make path from both ends
 
 #Imports
 import math
@@ -11,7 +10,7 @@ import sys
 import os # I don't think I need this
 import time
 
-divMark = 85
+divMark = 250
 
 def calcDistance(start, target):
 	# x val
@@ -29,6 +28,9 @@ def calcDistance(start, target):
 def minNext(start, unmarked):
 	minDist = 0
 	minVal = None
+
+	minEnd = 0
+	minEndVal = None
 
 	endPoint = len(unmarked)
 	# if (endPoint > 300):
@@ -48,6 +50,9 @@ def minNext(start, unmarked):
 			minDist = selectDist
 			minVal = list(selectVal)
 		elif(selectDist < minDist):
+			minEnd = minDist
+			minEndVal = list(minVal)
+
 			minDist = selectDist
 			minVal = list(selectVal)
 
@@ -58,13 +63,14 @@ def calcMin(start, graph):
 	unmarked.remove(start)
 
 	path = [start]
-	currentV = start
+	currentF = start
+	currentD = start
 	distance = 0
 
 	while (len(unmarked) > 0):
-		nextD, nextV = minNext(currentV, unmarked)
+		nextD, nextV, nextE, nextEV = minNext(currentV, unmarked) # use two closest variables as start and end of path
 
-		distance = distance + nextD
+		distance = distance + nextD + nextE
 
 		path.append(nextV)
 		# print "Selected:(" + str(len(unmarked)) + ") " + str(nextV)
@@ -76,7 +82,7 @@ def calcMin(start, graph):
 
 	return distance, path
 
-def calcPath(graph, sTime):
+def calcPath(graph):
 	# nextG = list(graph)
 	# nextS = nextG[0]
 
@@ -97,14 +103,6 @@ def calcPath(graph, sTime):
 		elif (resMin < minDist):
 			minDist = resMin
 			path = list(resPath)
-
-		# cEnd = time.time()
-		# cTime = cEnd - sTime
-		# print "Interval: " + str(x) 
-		# print "Result min: " +str(resMin)
-		# print "Current min: " + str(minDist)
-		# print "Current Start: " + str(path[0])
-		# print "Current time: " + str(cTime)
 
 		# nextG = list(resPath)
 		# nextS = resPath[len(nextG)/2]
@@ -134,11 +132,8 @@ def main():
 
 				inData = sorted(inData, key=lambda line: line[3])
 
-				if (len(inData) < 450):
-					divMark = 5000
-
 				tStart = time.time()
-				minDist, path = calcPath(inData, tStart)
+				minDist, path = calcPath(inData)
 				tEnd = time.time()
 
 				runTime = tEnd - tStart

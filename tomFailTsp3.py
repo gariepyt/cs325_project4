@@ -3,7 +3,7 @@
 # Last Updated: 3/7/2016
 # Description: Nearest Neighbour implementation of TSP
 
-# Note to self: still fails when dealing with larger number of cities
+# Binary search idea
 
 #Imports
 import math
@@ -11,7 +11,7 @@ import sys
 import os # I don't think I need this
 import time
 
-divMark = 85
+divMark = 90
 
 def calcDistance(start, target):
 	# x val
@@ -80,12 +80,27 @@ def calcPath(graph, sTime):
 	# nextG = list(graph)
 	# nextS = nextG[0]
 
-	minDist = None
-	path = None
+	# minDist = None
+	# path = None
 
-	endPoint = len(graph)
+	# endPoint = len(graph)
 	
-	interval = int(endPoint / divMark) + 1
+	# interval = int(endPoint / divMark) + 1
+
+	
+	lowPoint = 0
+	highPoint = len(graph) -1
+	midPoint = (lowPoint + highPoint)/2
+	
+	midD, midP = calcMin(graph[len(graph)/2], graph)
+
+	cD = midD
+	cP = list(midP)
+
+	lowerD, lowerP = calcMin
+
+	while lowPoint <= highPoint:
+
 
 	for x in range(0,endPoint, interval):
 		resMin, resPath = calcMin(graph[x], graph)
@@ -98,13 +113,12 @@ def calcPath(graph, sTime):
 			minDist = resMin
 			path = list(resPath)
 
-		# cEnd = time.time()
-		# cTime = cEnd - sTime
-		# print "Interval: " + str(x) 
-		# print "Result min: " +str(resMin)
-		# print "Current min: " + str(minDist)
-		# print "Current Start: " + str(path[0])
-		# print "Current time: " + str(cTime)
+		cEnd = time.time()
+		cTime = cEnd - sTime
+		print "Interval: " + str(x) 
+		print "Current min: " + str(minDist)
+		print "Current Start: " + str(path[0])
+		print "Current time: " + str(cTime)
 
 		# nextG = list(resPath)
 		# nextS = resPath[len(nextG)/2]
@@ -133,9 +147,6 @@ def main():
 					inData[x].append(calcDistance(['start', 0, 0], inData[x]))
 
 				inData = sorted(inData, key=lambda line: line[3])
-
-				if (len(inData) < 450):
-					divMark = 5000
 
 				tStart = time.time()
 				minDist, path = calcPath(inData, tStart)
