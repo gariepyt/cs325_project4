@@ -11,7 +11,11 @@ import sys
 import os # I don't think I need this
 import time
 
+<<<<<<< HEAD
 divMark = 85
+=======
+divMark = 250
+>>>>>>> origin/master
 
 def calcDistance(start, target):
 	# x val
@@ -136,6 +140,8 @@ def main():
 
 				if (len(inData) < 450):
 					divMark = 5000
+
+				inData = sorted(inData, key=lambda line: line[1])
 
 				tStart = time.time()
 				minDist, path = calcPath(inData, tStart)
